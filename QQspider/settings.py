@@ -48,7 +48,9 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
 #    'QQspider.middlewares.QqspiderSpiderMiddleware': 543,
+#    "scrapy.spidermiddlewares.depth.DepthMiddleware": NONE,
 #}
+
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
@@ -78,6 +80,7 @@ ROBOTSTXT_OBEY = True
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
 #AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+#AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
 #AUTOTHROTTLE_DEBUG = False
 
@@ -90,3 +93,4 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 #DEPTH_LIMIT = 0
 #DOWNLOAD_TIMEOUT = 60
+#FEED_EXPORT_ENCODING = 'utf-8'

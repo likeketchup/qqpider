@@ -36,7 +36,7 @@ class MySQL:
         try:
             self.cur.execute(sql, tuple(params))
         except pymysql.Error, e:
-            print sql,e
+            print sql, e
 
     def update(self, table_name, data):
         _sql = ""

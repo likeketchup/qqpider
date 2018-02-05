@@ -1,20 +1,24 @@
 # -*- coding:utf-8 -*-
 import scrapy
 import re
+import sys
 from mysql import MySQL
 from datetime import datetime
+from scrapy.selector import Selector
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 def find_domain(url):
     try:
-        domain = re.findall(r'http://[\w.]*.qq.com/', url)[0]
+        domain = re.findall(r'http://[\w.]*.qq.com', url)[0]
         return domain
     except IndexError:
         return "Not qq.com"
 
 
 def judge_url(url):
-    if re.match(r'http://\w*', url):
+    if re.match(r'http://', url):
         return 1
     return 0
 
@@ -47,11 +51,16 @@ class QQSpider(scrapy.Spider):
 
     def parse(self, response):
         if response.status:
-            for sel in response.xpath('//a[@href]'):
-                url_link = sel.xpath("@href")[0].extract()
-                url_title = sel.xpath("text()").extract()
-                url = url_link.encode("utf-8")
-                if url_title is None or url_title == []:
-                    url_title.append("No Title")
-                if judge_url(url_link):
-                    insert_data(get_data(url, url_title[0]))
+            selec = Selector(response)
+            sels = selec.xpath('//a')
+            for sel in sels:
+                try:
+                    url_link = sel.xpath("@href").extract()
+                    url_title = sel.xpath("text()").extract()
+                    url = url_link[0]
+                    if url_title is None or url_title == []:
+                        url_title.append("No Title")
+                    if judge_url(url):
+                        insert_data(get_data(url, url_title[0].encode("utf-8")))
+                except IndexError as e:
+                    print(e)
