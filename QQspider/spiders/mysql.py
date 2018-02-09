@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import pymysql
+import sys
+import chardet
 OperationalError = pymysql.OperationalError
-
 
 class MySQL:
     host = 'localhost'
@@ -15,6 +16,7 @@ class MySQL:
         try:
             self.conn = pymysql.connect(host=self.host, port=self.port, user=self.user, passwd=self.passwd, db=self.db)
             self.cur = self.conn.cursor()
+            self.cur.execute('set names \'utf8\';')
         except pymysql.Error, e:
             print(e)
 
