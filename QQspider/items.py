@@ -16,6 +16,6 @@ class QqspiderItem(scrapy.Item):
     catalog = scrapy.Field()
     source = scrapy.Field()
     time = scrapy.Field()
-    first_graph = scrapy.Field()
-    img = scrapy.Field()
+    first_paragraph = scrapy.Field()
+    image_urls = scrapy.Field()
     pass

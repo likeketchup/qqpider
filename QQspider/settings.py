@@ -8,7 +8,7 @@
 #     https://doc.scrapy.org/en/latest/topics/settings.html
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
-
+import os
 BOT_NAME = 'QQspider'
 
 SPIDER_MODULES = ['QQspider.spiders']
@@ -31,7 +31,7 @@ NEWSPIDER_MODULE = 'QQspider.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 64
+CONCURRENT_REQUESTS = 64
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -57,7 +57,7 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
 #    'QQspider.middlewares.QqspiderSpiderMiddleware': 543,
-#    "scrapy.spidermiddlewares.depth.DepthMiddleware": 544,
+#    "scrapy.spidermiddlewares.depth.DepthMiddleware": None,
 #}
 
 
@@ -75,10 +75,12 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'QQspider.pipelines.QqspiderPipeline': 300,
-#}
-
+ITEM_PIPELINES = {
+    'scrapy.pipeline.images.ImagesPipeline': 1,
+    'QQspider.pipelines.QqSpiderPipeline': 300,
+}
+project_dir = os.path.abspath(os.path.dirname(__file__))
+IMAGES_STORE = os.path.join(project_dir, 'images')
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -100,8 +102,8 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-#DEPTH_LIMIT = 2
-#DOWNLOAD_TIMEOUT = 15
-#FEED_EXPORT_ENCODING = None
-#RETRY_ENABLED = False
-#REDIRECT_ENABLED = False
+DEPTH_LIMIT = 1
+DOWNLOAD_TIMEOUT = 15
+FEED_EXPORT_ENCODING = "utf-8"
+RETRY_ENABLED = False
+REDIRECT_ENABLED = False

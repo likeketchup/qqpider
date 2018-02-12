@@ -52,7 +52,7 @@ def get_data(url, title):
 
 
 class QQSpider(CrawlSpider):
-    name = "three"
+    name = "qq"
     allowed_domains = ["qq.com"]
     start_urls = [
         "http://www.qq.com/"
@@ -62,23 +62,28 @@ class QQSpider(CrawlSpider):
 
     def parse_item(self, response):
         if response.status:
-            selector = Selector(response)
-            item = QqspiderItem()
-            item['urls'] = response.url
-            item['title'] = selector.xpath('/html/body/div[2]/div[3]/div[1]/d'
-                                           'iv/div[1]/div[1]/div[1]/h1/text()').extract()[0]
-            item['catalog'] = selector.xpath('/html/body/div[2]/div[3]/div[1]/div/div[1]/div[1]/div[1]/div/div[1]'
-                                             '/span[1]/a/text()').extract()[0]
-            item['source'] = selector.xpath('/html/body/div[2]/div[3]/div[1]/div/div[1]/div[1]/div['
-                                           '1]/div/div[1]/span[2]/a').extract()[0]
-            item['time'] = selector.xpath('/html/body/div[2]/div[3]/div[1]/div/div[1]/div[1]/div[1]/div/div[1]/spa'
-                                          'n[4]').extract()[0]
-            item['first_graph'] = /html/body/div[2]/div[4]/div[1]/div/div[1]/div[1]/div[2]/div/p[2]
-            item['img'] =''//*[@id="Cnt-Main-Article-QQ"]/p[2]
-            return item
+            try:
+                selector = Selector(response)
+                item = QqspiderItem()
+                info = selector.xpath(r'//div[@class="a_Info"]')
+                try:
+                    item['catalog'] = info.xpath(r'//span[@class="a_catalog"]/text()').extract()[0]
+                except IndexError:
+                    item['catalog'] = info.xpath(r'//span[@class="a_catalog"]/a/text()').extract()[0]
+                try:
+                    item['source'] = info.xpath(r'//span[@class="a_source"]/text()').extract()[0]
+                except IndexError:
+                    item['source'] = info.xpath(r'//span[@class="a_source"]/a/text()').extract()[0]
+                item['source'] = info.xpath(r'//span[@class="a_source"]/a/text()').extract()[0]
+                item['urls'] = response.url
+                item['title'] = selector.xpath(r'//h1/text()').extract()[0]
+                item['time'] = info.xpath(r'//span[@class="a_time"]/text()').extract()[0]
+                item['first_paragraph'] = selector.xpath(r'//*[@id="Cnt-Main-Article-QQ"]//p[@class="text"]/text()').extract()[1]
+                item['image_urls'] = selector.xpath(r'//p[@align="center"]/img/@src').extract()[0]
+                return item
+            except IndexError:
+                print(response.url)
 
-#            for i in urls:
-#                yield (scrapy.Request(url,callback=parse_domain))
 
 """
 selector = Selector(response)

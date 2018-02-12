@@ -54,7 +54,7 @@ def get_data(url, title):
 
 
 class QQSpider(Spider):
-    name = "qq"
+    name = "pre"
     allowed_domains = ["qq.com"]
     start_urls = [
         "http://www.qq.com/"
